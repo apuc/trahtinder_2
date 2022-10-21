@@ -28,9 +28,27 @@ class UserProfileController extends ApiController
                 'class' => \yii\filters\VerbFilter::class,
                 'actions' => [
                     'create' => ['post'],
+                    'profile' => ['get'],
+                    'update' => ['post'],
+                    'set-photo' => ['post'],
                 ],
             ]
         ]);
+    }
+
+    public function actionProfile(): array
+    {
+        $response = ResponseService::successResponse(
+            'Profile',
+            UserProfile::find()->where(['user_id' => Yii::$app->user->identity->id])->one()
+        );
+
+        if (empty($response['data'])) {
+            $response = ResponseService::errorResponse(
+                'The profile not exist!'
+            );
+        }
+        return $response;
     }
 
     public function actionCreate(): array

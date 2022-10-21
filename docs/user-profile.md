@@ -13,6 +13,14 @@
     </tr>
     <tr>
         <td>
+            api/user-profile/profile
+        </td>
+        <td>
+            Данные профиля
+        </td>
+    </tr>
+    <tr>
+        <td>
             api/user-profile/create
         </td>
         <td>
@@ -36,6 +44,37 @@
         </td>
     </tr>
 </table>
+
+### Данные профиля
+
+`http://yii-tinder.loc/api/user-profile/profile`
+<p>
+    Для получения данных профиля пользователя необходимо отправить <b>GET</b> запрос на URL http://yii-tinder.loc/api/user-profile/profile
+</p>
+
+<p>
+    Пример запроса:
+</p>
+
+`http://yii-tinder.loc/api/user-profile/profile`
+
+<p>
+    Возвращает объект <b>Профиль пользователя</b>:
+</p>
+
+```json5
+{
+  "message": "Profile",
+  "data": {
+    "name": "name111",
+    "gender": 20,
+    "city_id": 1,
+    "looking_for": 30,
+    "photo": "N/A",
+    "birthday": "1992-10-21 00:00:00"
+  }
+}
+```
 
 ### Создать профиль
 
@@ -87,6 +126,14 @@
             ID города 
         </td>
     </tr>
+    <tr>
+        <td>
+            birthday
+        </td>
+        <td>
+            Дата рождения(формат: y:m:d) 
+        </td>
+    </tr>
 </table>
 <p>
     Пример запроса:
@@ -106,7 +153,8 @@
     "gender": "20",
     "city_id": "1",
     "looking_for": "30",
-    "photo": "N/A"
+    "photo": "N/A",
+    "birthday": "1992-10-21"
   }
 }
 ```
@@ -169,6 +217,14 @@
             ID города 
         </td>
     </tr>
+    <tr>
+        <td>
+            birthday
+        </td>
+        <td>
+            Дата рождения(формат: y:m:d) 
+        </td>
+    </tr>
 </table>
 
 <p>
@@ -183,7 +239,8 @@
     "gender": "30",
     "city_id": "1",
     "looking_for": "20",
-    "photo": "N/A"
+    "photo": "N/A",
+    "birthday": "2000-10-22"
   }
 }
 ```

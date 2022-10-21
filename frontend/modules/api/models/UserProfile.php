@@ -14,6 +14,7 @@ class UserProfile extends \common\models\UserProfile
             'photo' => function () {
                 return $this->getPhotoLink();
             },
+            'birthday'
         ];
     }
 
