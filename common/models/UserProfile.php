@@ -15,6 +15,8 @@ namespace common\models;
  * @property string $birthday
  * @property string $created_at
  * @property string $updated_at
+ * @property int $min_age
+ * @property int $max_age
  *
  * @property City $city
  * @property User $user
@@ -40,13 +42,13 @@ class UserProfile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gender', 'looking_for', 'user_id', 'city_id'], 'integer'],
+            [['gender', 'looking_for', 'user_id', 'city_id', 'min_age', 'max_age'], 'integer'],
             [['gender', 'looking_for'], function ($attribute) {
                 if (!in_array($this->$attribute, [self::GENDER_WOMAN, self::GENDER_MAN])) {
                     $this->addError($attribute, 'Invalid gender!');
                 }
             }],
-            [['user_id', 'city_id', 'gender', 'looking_for', 'birthday'], 'required'],
+            [['user_id', 'city_id', 'gender', 'looking_for', 'birthday', 'min_age', 'max_age'], 'required'],
             [['birthday', 'created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 64],
             [['photo'], 'string', 'max' => 255],
@@ -62,6 +64,11 @@ class UserProfile extends \yii\db\ActiveRecord
                 }
                 if (60 < $years) {
                     $this->addError($attribute, "Sorry you're too old");
+                }
+            }],
+            [['min_age'], function ($attribute) {
+                if ($this->min_age > $this->max_age) {
+                    $this->addError($attribute, "Min age cannot be greater than max age!");
                 }
             }]
         ];
@@ -83,6 +90,8 @@ class UserProfile extends \yii\db\ActiveRecord
             'birthday' => 'Дата рождения',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'min_age' => 'Минимальный возраст партнёра',
+            'max_age' => 'Максимальный возраст партнёра',
         ];
     }
 
