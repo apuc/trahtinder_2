@@ -3,10 +3,8 @@
 namespace frontend\modules\api\controllers;
 
 use common\services\ResponseService;
-use frontend\modules\api\models\UserProfile;
 use frontend\modules\api\models\WatchedProfiles;
 use Yii;
-use yii\data\ActiveDataProvider;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\helpers\ArrayHelper;
@@ -27,7 +25,6 @@ class WatchedProfilesController extends ApiController
             'verbs' => [
                 'class' => \yii\filters\VerbFilter::class,
                 'actions' => [
-//                    'vie-profile' => ['post'],
                     'viewed-profile' => ['post'],
                 ],
             ]

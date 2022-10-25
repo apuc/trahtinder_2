@@ -23,7 +23,7 @@
 
 ### Просмотр профиля
 
-`http://yii-tinder.loc/api/user-profile/profile`
+`http://yii-tinder.loc/api/watched-profiles/viewed-profile`
 <p>
     Для сохранения просмотра профиля необходимо отправить <b>POST</b> запрос на URL http://yii-tinder.loc/api/watched-profiles/viewed-profile
 </p>
@@ -78,16 +78,19 @@
 
 ```json5
 {
-  "message": "Profile",
+  "message": "Profile viewed!",
   "data": {
-    "name": "name111",
-    "gender": 20,
-    "city_id": 1,
-    "looking_for": 30,
-    "photo": "N/A",
-    "birthday": "1992-10-21 00:00:00",
-    "min_age": 18,
-    "max_age": 22
+    "id": 11,
+    "status": "20",
+    "user_profile_id": "15",
+    "candidate_profile_id": "11",
+    "created_at": 1666705453,
+    "updated_at": 1666705453,
+    "mutual": true
   }
 }
 ```
+
+<p>
+    Параметр "mutual" показывает поставил ли просматриваемый вами профиль вам лайк
+</p>
