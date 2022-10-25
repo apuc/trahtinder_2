@@ -82,12 +82,13 @@ class UserProfileController extends ApiController
     {
         $userProfile = UserProfile::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
 
-        if ($userProfile->load(Yii::$app->request->post(), '') && $userProfile->update()) {
-            $response = ResponseService::successResponse(
-                'Profile is updated!',
-                $userProfile
-            );
-
+        if ($userProfile->load(Yii::$app->request->post(), '')) {
+            if ($userProfile->update() !== false ) {
+                $response = ResponseService::successResponse(
+                    'Profile is updated!',
+                    $userProfile
+                );
+            }
         } else {
             Yii::$app->response->statusCode = 400;
             $response = ResponseService::errorResponse(
