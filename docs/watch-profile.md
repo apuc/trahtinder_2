@@ -19,6 +19,14 @@
             Сохронить просмотр профиля
         </td>
     </tr>
+    <tr>
+        <td>
+            api/watched-profiles/update
+        </td>
+        <td>
+            Обновить просмотр профиля
+        </td>
+    </tr>
 </table>
 
 ### Просмотр профиля
@@ -86,6 +94,80 @@
     "candidate_profile_id": "11",
     "created_at": 1666705453,
     "updated_at": 1666705453,
+    "mutual": true
+  }
+}
+```
+
+<p>
+    Параметр "mutual" показывает поставил ли просматриваемый вами профиль вам лайк
+</p>
+
+### Обновить просмотр
+
+`http://yii-tinder.loc/api/watched-profiles/update`
+<p>
+    Для обновления просмотра профиля необходимо отправить <b>POST</b> запрос на URL http://yii-tinder.loc/api/watched-profiles/update
+</p>
+<p>
+    Требуемые параметры:
+</p>
+<table>
+    <tr>
+        <th>
+            Параметры
+        </th>
+        <th>
+            Значение
+        </th>
+    </tr>
+    <tr>
+        <td>
+            status
+        </td>
+        <td>
+            10 - лайк;
+            20 - звёздочка; 
+            30 - дизлайк
+        </td>
+    </tr>
+    <tr>
+        <td>
+            candidate_profile_id
+        </td>
+        <td>
+            id профиля кандидата
+        </td>
+    </tr>
+    <tr>
+        <td>
+            user_profile_id
+        </td>
+        <td>
+            id профиля пользователя   
+        </td>
+    </tr>
+</table>
+<p>
+    Пример запроса:
+</p>
+
+`http://yii-tinder.loc/api/watched-profiles/update`
+
+<p>
+    Возвращает объект <b>Профиль пользователя</b>:
+</p>
+
+```json5
+{
+  "message": "Is updated!",
+  "data": {
+    "id": 11,
+    "status": "20",
+    "user_profile_id": "15",
+    "candidate_profile_id": "11",
+    "created_at": 1666705453,
+    "updated_at": 1666708804,
     "mutual": true
   }
 }
