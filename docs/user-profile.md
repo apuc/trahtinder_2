@@ -37,10 +37,26 @@
     </tr>
     <tr>
         <td>
-            user-profile/set-photo
+            api/user-profile/set-photo
         </td>
         <td>
             Загрузить/обновить фото
+        </td>
+    </tr>
+    <tr>
+        <td>
+            api/user-profile/candidates
+        </td>
+        <td>
+            Получить список возможных партнёров в соответствии с задаными параметрами
+        </td>
+    </tr>
+    <tr>
+        <td>
+            api/user-profile/viewed
+        </td>
+        <td>
+            Получить список совместимых кандидатов в соответствии со статусом
         </td>
     </tr>
 </table>
@@ -327,5 +343,146 @@
 {
   "message": "Photo is set!",
   "data": "/uploads/profile-photo/cf3713220627eef33af9e75f997ddc2a.png"
+}
+```
+
+### Получить список возможных партнёров
+
+`http://yii-tinder.loc/api/user-profile/candidates`
+
+<p>
+    Для получения списка возможных партнёров необходимо отправить <b>GET</b> запрос
+    на URL http://yii-tinder.loc/api/user-profile/candidates. В ответ будет отправлен список возможных кандидатов.
+</p>
+<p> 
+    Пример запроса:
+</p>
+
+`http://yii-tinder.loc/api/user-profile/candidates`
+
+<p>
+    Пример возвращаемых данных
+</p>
+
+```json5
+{
+  "candidateProfiles": [
+    {
+      "id": 13,
+      "name": "Men3",
+      "gender": 30,
+      "city_id": 3,
+      "looking_for": 20,
+      "photo": "N/A",
+      "birthday": "2000-10-24 13:06:47",
+      "min_age": 18,
+      "max_age": 34
+    },
+    {
+      "id": 14,
+      "name": "Men4",
+      "gender": 30,
+      "city_id": 3,
+      "looking_for": 20,
+      "photo": "N/A",
+      "birthday": "2000-10-24 13:06:47",
+      "min_age": 18,
+      "max_age": 34
+    }
+  ],
+  "_links": {
+    "self": {
+      "href": "http://yii-tinder.loc/api/user-profile/candidates?page=1"
+    },
+    "first": {
+      "href": "http://yii-tinder.loc/api/user-profile/candidates?page=1"
+    },
+    "last": {
+      "href": "http://yii-tinder.loc/api/user-profile/candidates?page=1"
+    }
+  },
+  "_meta": {
+    "totalCount": 2,
+    "pageCount": 1,
+    "currentPage": 1,
+    "perPage": 20
+  }
+}
+```
+
+### Получить список просмотренных профилей
+`http://yii-tinder.loc/api/user-profile/viewed`
+
+<p>
+    В зависемости от передаваемого статуса возвращает список просмотренных профилей.
+    Для получения ответа необходимо отправить <b>GET</b> запрос
+    на URL http://yii-tinder.loc/api/user-profile/viewed.
+</p>
+<p> 
+    Пример запроса:
+</p>
+
+`http://yii-tinder.loc/api/user-profile/joint?status=10`
+
+<p>
+    Требуемые параметры:
+</p>
+<table>
+    <tr>
+        <th>
+            Параметры
+        </th>
+        <th>
+            Значение
+        </th>
+    </tr>
+    <tr>
+        <td>
+            status
+        </td>
+        <td>
+            10 - взаимный лайк;
+            20 - взаимная звёздочка; 
+            30 - взаимный дизлайк
+        </td>
+    </tr>
+</table>
+
+<p>
+    Пример возвращаемых данных
+</p>
+
+```json5
+{
+  "candidateProfiles": [
+    {
+      "id": 7,
+      "name": "Man1",
+      "gender": 30,
+      "city_id": 1,
+      "looking_for": 20,
+      "photo": "N/A",
+      "birthday": "1970-10-24 13:06:47",
+      "min_age": 18,
+      "max_age": 34
+    }
+  ],
+  "_links": {
+    "self": {
+      "href": "http://yii-tinder.loc/api/user-profile/joint?status=10&page=1"
+    },
+    "first": {
+      "href": "http://yii-tinder.loc/api/user-profile/joint?status=10&page=1"
+    },
+    "last": {
+      "href": "http://yii-tinder.loc/api/user-profile/joint?status=10&page=1"
+    }
+  },
+  "_meta": {
+    "totalCount": 1,
+    "pageCount": 1,
+    "currentPage": 1,
+    "perPage": 20
+  }
 }
 ```

@@ -5,7 +5,9 @@ namespace frontend\modules\api\controllers;
 
 use common\services\ResponseService;
 use frontend\modules\api\models\UserProfile;
+use frontend\modules\api\models\WatchedProfiles;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\helpers\ArrayHelper;
@@ -13,7 +15,11 @@ use yii\web\UploadedFile;
 
 class UserProfileController extends ApiController
 {
-    public $modeClass = UserProfile::class;
+    public $modelClass = 'frontend\modules\api\models\UserProfile';
+    public $serializer = [
+        'class' => 'yii\rest\Serializer',
+        'collectionEnvelope' => 'candidateProfiles',
+    ];
 
     public function behaviors(): array
     {
@@ -31,6 +37,8 @@ class UserProfileController extends ApiController
                     'profile' => ['get'],
                     'update' => ['post'],
                     'set-photo' => ['post'],
+                    'candidates' => ['get'],
+                    'joint' => ['get']
                 ],
             ]
         ]);
@@ -118,5 +126,53 @@ class UserProfileController extends ApiController
         return ResponseService::errorResponse(
             'Photo is empty'
         );
+    }
+
+    public function actionCandidates(): ActiveDataProvider
+    {
+        $userProfile = UserProfile::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
+
+        return new ActiveDataProvider([
+            'query' => UserProfile::find()
+                ->leftJoin('watched_profiles', 'user_profile.id = watched_profiles.candidate_profile_id')
+                ->where(['watched_profiles.user_profile_id' => null])
+                ->andWhere(['looking_for' => $userProfile->gender, 'gender' => $userProfile->looking_for])
+                ->andWhere(['!=', 'user_profile.id', $userProfile->id])
+                ->andWhere(['<', 'TIMESTAMPDIFF(YEAR,birthday,curdate())', $userProfile->max_age])
+                ->andWhere(['>', 'TIMESTAMPDIFF(YEAR,birthday,curdate())', $userProfile->min_age])
+                ->andWhere(['user_profile.city_id' => $userProfile->city_id])
+        ]);
+    }
+
+    public function actionJoint(int $status)
+    {
+        $userProfile = UserProfile::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
+
+//        $candidate_profile_id = WatchedProfiles::find()
+//            ->select(['watched_profiles.candidate_profile_id']) //w_p.candidate_profile_id
+//            ->innerJoin('watched_profiles as candidate_watch', 'candidate_watch.candidate_profile_id = ' . $userProfile->id)
+//            ->where(['watched_profiles.status' => 'candidate_watch.status'])
+//            ->andWhere(['watched_profiles.status' => $status])
+//            ->andWhere(['candidate_watch.status' => $status])
+//            ->andWhere(['watched_profiles.candidate_profile_id' => 'candidate_watch.user_profile_id'])
+//            ->all();
+
+        $connection = Yii::$app->getDb();
+        $command = $connection->createCommand("
+                SELECT w_p.candidate_profile_id FROM watched_profiles w_p
+                inner join watched_profiles cand_w_p on cand_w_p.candidate_profile_id = $userProfile->id
+                where w_p.status = cand_w_p.status and w_p.status = $status and cand_w_p.status = $status
+                and w_p.candidate_profile_id = cand_w_p.user_profile_id;");
+        $candidateProfileIDArr = $command->queryAll();
+
+        $candidateIdList = [];
+        foreach ($candidateProfileIDArr as $profile_id) {
+            $candidateIdList[] = $profile_id['candidate_profile_id'];
+        }
+
+        return new ActiveDataProvider([
+            'query' => UserProfile::find()
+                ->where(['in', 'id', $candidateIdList])
+        ]);
     }
 }

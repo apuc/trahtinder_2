@@ -4,9 +4,12 @@ namespace frontend\modules\api\models;
 
 class UserProfile extends \common\models\UserProfile
 {
+    public $age = 'TIMESTAMPDIFF(YEAR,birthday,curdate())';
+
     public function fields(): array
     {
         return [
+            'id',
             'name',
             'gender',
             'city_id',
