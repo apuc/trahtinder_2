@@ -27,7 +27,8 @@ class WatchedProfilesController extends ApiController
             'verbs' => [
                 'class' => \yii\filters\VerbFilter::class,
                 'actions' => [
-                    'vie-profile' => ['post'],
+//                    'vie-profile' => ['post'],
+                    'viewed-profile' => ['post'],
                 ],
             ]
         ]);
@@ -36,19 +37,6 @@ class WatchedProfilesController extends ApiController
     public function actionViewedProfile(): array
     {
         $watchedProfile = new WatchedProfiles();
-
-        $colors = Yii::$app->request->post('colors');
-
-        $ids = ArrayHelper::getColumn($colors, 'id');
-        $savedColorIDs = ArrayHelper::getColumn(Color::find()->select(['id'])->all(), 'id');
-
-        $deletedIds = array_diff($savedColorIDs, $ids);
-
-        foreach ($deletedIds as $id){
-            $model = Color::findOne($id);
-            $model->delete();
-        }
-
 
         if ($watchedProfile->load(Yii::$app->request->post(), '') && $watchedProfile->save()) {
             $response = ResponseService::successResponse(
