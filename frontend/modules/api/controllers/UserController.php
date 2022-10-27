@@ -4,6 +4,7 @@ namespace frontend\modules\api\controllers;
 
 use common\services\ResponseService;
 use frontend\modules\api\models\LoginForm;
+use frontend\modules\api\models\PasswordResetRequestForm;
 use frontend\modules\api\models\SignupForm;
 use frontend\modules\api\models\User;
 use Yii;
@@ -21,6 +22,7 @@ class UserController extends ApiController
                 'actions' => [
                     'login' => ['GET'],
                     'create' => ['POST'],
+                    'request-password-reset' => ['POST'],
                 ],
             ];
 
@@ -61,5 +63,27 @@ class UserController extends ApiController
             );
         }
         return $response;
+    }
+
+    /**
+     * Requests password reset.
+     *
+     * @return mixed
+     */
+    public function actionRequestPasswordReset()
+    {
+        $model = new PasswordResetRequestForm();
+        if ($model->load(Yii::$app->request->post(), '') & $model->validate()) {
+            if ($model->sendEmail()) {
+                return ResponseService::successResponse(
+                    'Check your email for further instructions.',
+                    User::findByEmail($model->email)
+                );
+            }
+        }
+        Yii::$app->response->statusCode = 400;
+        return ResponseService::errorResponse(
+            $model->getErrors()
+        );
     }
 }

@@ -42,13 +42,55 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+//        'urlManager' => [
+//            'enablePrettyUrl' => true,
+//            'showScriptName' => false,
+//            'rules' => [
+//                ['class' => 'yii\rest\UrlRule', 'controller' => 'user'],
+//            ],
+//        ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+//            'enableStrictParsing' => true,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'user'],
-            ],
-        ],
+                [
+                    'pattern' => '',
+                    'route' => 'main/index',
+                    'suffix' => ''
+                ],
+                [
+                    'pattern' => 'найти-<search:\w*>-<year:\d{4}>',
+                    'route' => 'main/search',
+                    'suffix' => '.html'
+                ],
+                [
+                    'pattern' => 'найти-<search:\w*>',
+                    'route' => 'main/search',
+                    'suffix' => '.html'
+                ],
+                [
+                    'pattern' => '<controller>/<action>/<id:\d+>',
+                    'route' => '<controller>/<action>',
+                    'suffix' => ''
+                ],
+                [
+                    'pattern' => '<controller>/<action>',
+                    'route' => '<controller>/<action>',
+                    'suffix' => '.html'
+                ],
+                [
+                    'pattern' => '<module>/<controller>/<action>/<id:\d+>',
+                    'route' => '<module>/<controller>/<action>',
+                    'suffix' => ''
+                ],
+                [
+                    'pattern' => '<module>/<controller>/<action>',
+                    'route' => '<module>/<controller>/<action>',
+                    'suffix' => '.html'
+                ],
+            ]
+        ]
     ],
     'params' => $params,
 ];
