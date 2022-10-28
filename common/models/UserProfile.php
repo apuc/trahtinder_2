@@ -2,6 +2,9 @@
 
 namespace common\models;
 
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
+
 /**
  * This is the model class for table "user_profile".
  *
@@ -17,6 +20,7 @@ namespace common\models;
  * @property string $updated_at
  * @property int $min_age
  * @property int $max_age
+ * @property string|null $about
  *
  * @property City $city
  * @property User $user
@@ -36,6 +40,18 @@ class UserProfile extends \yii\db\ActiveRecord
         return 'user_profile';
     }
 
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                'value' => new Expression('NOW()'),
+            ],
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -48,6 +64,7 @@ class UserProfile extends \yii\db\ActiveRecord
                     $this->addError($attribute, 'Invalid gender!');
                 }
             }],
+            [['about'], 'string'],
             [['user_id', 'city_id', 'gender', 'looking_for', 'birthday', 'min_age', 'max_age'], 'required'],
             [['birthday', 'created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 64],
@@ -92,6 +109,7 @@ class UserProfile extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'min_age' => 'Минимальный возраст партнёра',
             'max_age' => 'Максимальный возраст партнёра',
+            'about' => 'Обо мне',
         ];
     }
 

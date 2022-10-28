@@ -19,7 +19,8 @@ class UserProfile extends \common\models\UserProfile
             },
             'birthday',
             'min_age',
-            'max_age'
+            'max_age',
+            'about'
         ];
     }
 
