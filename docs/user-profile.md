@@ -130,10 +130,10 @@
     </tr>
     <tr>
         <td>
-            looking_for
+            orientation
         </td>
         <td>
-            Пол партнёра(20-жещина, 30-мужчина)   
+            Ориентация пользователя( гетеро = 90, гей = 40, лесбиянка = 50, бисексуал = 60)
         </td>
     </tr>
     <tr>
@@ -239,10 +239,10 @@
     </tr>
     <tr>
         <td>
-            looking_for
+            orientation
         </td>
         <td>
-            Пол партнёра(20-жещина, 30-мужчина)   
+            Ориентация пользователя( гетеро = 90, гей = 40, лесбиянка = 50, бисексуал = 60)
         </td>
     </tr>
     <tr>
@@ -368,26 +368,94 @@
 {
   "candidateProfiles": [
     {
+      "id": 9,
+      "name": "Woman1",
+      "gender": 20,
+      "photo": null,
+      "user_id": 6,
+      "city_id": 3,
+      "birthday": "2000-10-24 13:06:47",
+      "created_at": "2022-10-24 13:07:04",
+      "updated_at": "2022-10-24 13:07:13",
+      "min_age": 18,
+      "max_age": 34,
+      "about": null,
+      "orientation": 50
+    },
+    {
+      "id": 10,
+      "name": "Woman2",
+      "gender": 20,
+      "photo": null,
+      "user_id": 7,
+      "city_id": 3,
+      "birthday": "2000-10-24 13:06:47",
+      "created_at": "2022-10-24 13:07:06",
+      "updated_at": "2022-10-24 13:07:16",
+      "min_age": 18,
+      "max_age": 34,
+      "about": null,
+      "orientation": 60
+    },
+    {
       "id": 13,
       "name": "Men3",
       "gender": 30,
+      "photo": null,
+      "user_id": 11,
       "city_id": 3,
-      "looking_for": 20,
-      "photo": "N/A",
       "birthday": "2000-10-24 13:06:47",
+      "created_at": "2022-10-24 13:07:07",
+      "updated_at": "2022-10-24 13:07:14",
       "min_age": 18,
-      "max_age": 34
+      "max_age": 34,
+      "about": null,
+      "orientation": 90
     },
     {
       "id": 14,
       "name": "Men4",
       "gender": 30,
+      "photo": null,
+      "user_id": 12,
       "city_id": 3,
-      "looking_for": 20,
-      "photo": "N/A",
       "birthday": "2000-10-24 13:06:47",
+      "created_at": "2022-10-24 13:07:07",
+      "updated_at": "2022-10-24 13:07:14",
       "min_age": 18,
-      "max_age": 34
+      "max_age": 34,
+      "about": null,
+      "orientation": 60
+    },
+    {
+      "id": 15,
+      "name": "upN55555",
+      "gender": 30,
+      "photo": "a88d0ba0fa5f7da0b588d21f873f526b.png",
+      "user_id": 13,
+      "city_id": 3,
+      "birthday": "2001-10-28 00:00:00",
+      "created_at": "2022-10-24 13:07:07",
+      "updated_at": "2022-10-24 13:07:14",
+      "min_age": 18,
+      "max_age": 34,
+      "about": null,
+      "orientation": 90
+    },
+    {
+      "id": 20,
+      "name": "upN55555",
+      "gender": 30,
+      "photo": null,
+      "user_id": 17,
+      "city_id": 3,
+      "birthday": "2001-10-28 00:00:00",
+      "created_at": "2022-10-28 11:47:35",
+      "updated_at": "2022-10-28 11:48:32",
+      "min_age": 18,
+      "max_age": 34,
+      "about": null,
+      "orientation": 90
     }
   ],
   "_links": {
@@ -402,7 +470,7 @@
     }
   },
   "_meta": {
-    "totalCount": 2,
+    "totalCount": 6,
     "pageCount": 1,
     "currentPage": 1,
     "perPage": 20
@@ -460,11 +528,11 @@
       "name": "Man1",
       "gender": 30,
       "city_id": 1,
-      "looking_for": 20,
       "photo": "N/A",
       "birthday": "1970-10-24 13:06:47",
       "min_age": 18,
-      "max_age": 34
+      "max_age": 34,
+      "orientation": 90
     }
   ],
   "_links": {
