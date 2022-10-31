@@ -39,7 +39,8 @@ class UserProfileController extends ApiController
                     'update' => ['post'],
                     'set-photo' => ['post'],
                     'candidates' => ['get'],
-                    'joint' => ['get']
+                    'joint' => ['get'],
+                    'candidate-profile' => ['get'],
                 ],
             ]
         ]);
@@ -50,6 +51,21 @@ class UserProfileController extends ApiController
         $response = ResponseService::successResponse(
             'Profile',
             UserProfile::find()->where(['user_id' => Yii::$app->user->identity->id])->one()
+        );
+
+        if (empty($response['data'])) {
+            $response = ResponseService::errorResponse(
+                'The profile not exist!'
+            );
+        }
+        return $response;
+    }
+
+    public function actionCandidateProfile($profile_id = null): array
+    {
+        $response = ResponseService::successResponse(
+            'Profile',
+            UserProfile::find()->where(['user_id' => $profile_id])->one()
         );
 
         if (empty($response['data'])) {

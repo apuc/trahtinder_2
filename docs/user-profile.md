@@ -21,6 +21,14 @@
     </tr>
     <tr>
         <td>
+            api/user-profile/candidate-profile
+        </td>
+        <td>
+            Получить профиль кандидата
+        </td>
+    </tr>
+    <tr>
+        <td>
             api/user-profile/create
         </td>
         <td>
@@ -90,6 +98,63 @@
     "birthday": "1992-10-21 00:00:00",
     "min_age": 18,
     "max_age": 22
+  }
+}
+```
+
+### Получить профиль кандидата
+
+`http://yii-tinder.loc/api/user-profile/candidate-profile`
+<p>
+    Для получения данных профиля пользователя необходимо отправить <b>GET</b> запрос на URL http://yii-tinder.loc/api/user-profile/candidate-profile
+</p>
+
+<p>
+    Требуемые параметры:
+</p>
+<table>
+    <tr>
+        <th>
+            Параметры
+        </th>
+        <th>
+            Значение
+        </th>
+    </tr>
+    <tr>
+        <td>
+            profile_id
+        </td>
+        <td>
+            id профиля пользователя
+        </td>
+    </tr>
+</table>
+
+<p>
+    Пример запроса:
+</p>
+
+`http://yii-tinder.loc/api/user-profile/candidate-profile`
+
+<p>
+    Возвращает объект <b>Профиль пользователя</b>:
+</p>
+
+```json5
+{
+  "message": "Profile",
+  "data": {
+    "id": 7,
+    "name": "Man1",
+    "gender": 30,
+    "orientation": 90,
+    "city_id": 3,
+    "photo": "N/A",
+    "birthday": "1970-10-24 13:06:47",
+    "min_age": 18,
+    "max_age": 34,
+    "about": null
   }
 }
 ```
