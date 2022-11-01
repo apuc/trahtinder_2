@@ -65,7 +65,7 @@ class UserProfileController extends ApiController
     {
         $response = ResponseService::successResponse(
             'Profile',
-            UserProfile::find()->where(['user_id' => $profile_id])->one()
+            UserProfile::find()->where(['id' => $profile_id])->one()
         );
 
         if (empty($response['data'])) {
