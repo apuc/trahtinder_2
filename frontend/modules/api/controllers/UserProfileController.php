@@ -4,6 +4,7 @@ namespace frontend\modules\api\controllers;
 
 
 use common\services\ResponseService;
+use common\services\UserProfileService;
 use frontend\modules\api\models\UserProfile;
 use frontend\modules\api\models\WatchedProfiles;
 use Yii;
@@ -38,7 +39,8 @@ class UserProfileController extends ApiController
                     'update' => ['post'],
                     'set-photo' => ['post'],
                     'candidates' => ['get'],
-                    'joint' => ['get']
+                    'joint' => ['get'],
+                    'candidate-profile' => ['get'],
                 ],
             ]
         ]);
@@ -49,6 +51,21 @@ class UserProfileController extends ApiController
         $response = ResponseService::successResponse(
             'Profile',
             UserProfile::find()->where(['user_id' => Yii::$app->user->identity->id])->one()
+        );
+
+        if (empty($response['data'])) {
+            $response = ResponseService::errorResponse(
+                'The profile not exist!'
+            );
+        }
+        return $response;
+    }
+
+    public function actionCandidateProfile($profile_id = null): array
+    {
+        $response = ResponseService::successResponse(
+            'Profile',
+            UserProfile::find()->where(['id' => $profile_id])->one()
         );
 
         if (empty($response['data'])) {
@@ -131,17 +148,8 @@ class UserProfileController extends ApiController
 
     public function actionCandidates(): ActiveDataProvider
     {
-        $userProfile = UserProfile::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
-
         return new ActiveDataProvider([
-            'query' => UserProfile::find()
-                ->leftJoin('watched_profiles', 'user_profile.id = watched_profiles.candidate_profile_id')
-                ->where(['watched_profiles.user_profile_id' => null])
-                ->andWhere(['looking_for' => $userProfile->gender, 'gender' => $userProfile->looking_for])
-                ->andWhere(['!=', 'user_profile.id', $userProfile->id])
-                ->andWhere(['<', 'TIMESTAMPDIFF(YEAR,birthday,curdate())', $userProfile->max_age])
-                ->andWhere(['>', 'TIMESTAMPDIFF(YEAR,birthday,curdate())', $userProfile->min_age])
-                ->andWhere(['user_profile.city_id' => $userProfile->city_id])
+            'query' => UserProfileService::findCandidates(Yii::$app->user->identity->id)
         ]);
     }
 

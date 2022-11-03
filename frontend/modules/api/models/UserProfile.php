@@ -12,14 +12,15 @@ class UserProfile extends \common\models\UserProfile
             'id',
             'name',
             'gender',
+            'orientation',
             'city_id',
-            'looking_for',
             'photo' => function () {
                 return $this->getPhotoLink();
             },
             'birthday',
             'min_age',
-            'max_age'
+            'max_age',
+            'about'
         ];
     }
 

@@ -2,13 +2,15 @@
 
 namespace common\models;
 
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
+
 /**
  * This is the model class for table "user_profile".
  *
  * @property int $id
  * @property string|null $name
  * @property int|null $gender
- * @property int|null $looking_for
  * @property string|null $photo
  * @property int $user_id
  * @property int $city_id
@@ -17,6 +19,8 @@ namespace common\models;
  * @property string $updated_at
  * @property int $min_age
  * @property int $max_age
+ * @property string|null $about
+ * @property int|null $orientation
  *
  * @property City $city
  * @property User $user
@@ -28,6 +32,11 @@ class UserProfile extends \yii\db\ActiveRecord
     const GENDER_WOMAN = 20;
     const GENDER_MAN = 30;
 
+    const ORIENTATION_HETERO = 90;
+    const ORIENTATION_GAY = 40;
+    const ORIENTATION_LESBIAN = 50;
+    const ORIENTATION_BISEXUAL = 60;
+
     /**
      * {@inheritdoc}
      */
@@ -36,19 +45,42 @@ class UserProfile extends \yii\db\ActiveRecord
         return 'user_profile';
     }
 
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                'value' => new Expression('NOW()'),
+            ],
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['gender', 'looking_for', 'user_id', 'city_id', 'min_age', 'max_age'], 'integer'],
-            [['gender', 'looking_for'], function ($attribute) {
+            [['gender', 'user_id', 'city_id', 'min_age', 'max_age', 'orientation'], 'integer'],
+            [['gender'], function ($attribute) {
                 if (!in_array($this->$attribute, [self::GENDER_WOMAN, self::GENDER_MAN])) {
                     $this->addError($attribute, 'Invalid gender!');
                 }
             }],
-            [['user_id', 'city_id', 'gender', 'looking_for', 'birthday', 'min_age', 'max_age'], 'required'],
+            [['about'], 'string'],
+            [['user_id', 'city_id', 'gender', 'birthday', 'min_age', 'max_age', 'orientation'], 'required'],
+            [['orientation'], function ($attribute) {
+                if (!in_array($this->$attribute, [
+                    self::ORIENTATION_HETERO,
+                    self::ORIENTATION_LESBIAN,
+                    self::ORIENTATION_BISEXUAL,
+                    self::ORIENTATION_GAY
+                ])) {
+                    $this->addError($attribute, 'Invalid orientation!');
+                }
+            }],
             [['birthday', 'created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 64],
             [['photo'], 'string', 'max' => 255],
@@ -83,7 +115,6 @@ class UserProfile extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'gender' => 'Gender',
-            'looking_for' => 'Looking For',
             'photo' => 'Photo',
             'user_id' => 'User ID',
             'city_id' => 'City ID',
@@ -92,6 +123,8 @@ class UserProfile extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'min_age' => 'Минимальный возраст партнёра',
             'max_age' => 'Максимальный возраст партнёра',
+            'about' => 'Обо мне',
+            'orientation' => 'Ориентация',
         ];
     }
 

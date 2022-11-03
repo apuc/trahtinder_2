@@ -33,41 +33,36 @@ class WatchedProfilesController extends ApiController
 
     public function actionViewedProfile(): array
     {
-        $watchedProfile = new WatchedProfiles();
-
-        if ($watchedProfile->load(Yii::$app->request->post(), '') && $watchedProfile->save()) {
-            $response = ResponseService::successResponse(
-                'Profile viewed!',
-                $watchedProfile
-            );
-        } else {
-            Yii::$app->response->statusCode = 400;
-            $response = ResponseService::errorResponse(
-                $watchedProfile->getErrors()
-            );
-        }
-        return $response;
-    }
-
-    public function actionUpdate(): array
-    {
         $watchedProfile = WatchedProfiles::find()->where([
             'user_profile_id' => \Yii::$app->request->post('user_profile_id'),
             'candidate_profile_id' => Yii::$app->request->post('candidate_profile_id')
         ])->one();
 
-        if ( $watchedProfile->load(Yii::$app->request->post(), '')) {
-            if ($watchedProfile->update() !== false ) {
+        if ($watchedProfile != null) {
+            if ( $watchedProfile->load(Yii::$app->request->post(), '') && $watchedProfile->update() !== false) {
                 $response = ResponseService::successResponse(
                     'Is updated!',
                     $watchedProfile
                 );
+            } else {
+                Yii::$app->response->statusCode = 400;
+                $response = ResponseService::errorResponse(
+                    $watchedProfile->getErrors()
+                );
             }
         } else {
-            Yii::$app->response->statusCode = 400;
-            $response = ResponseService::errorResponse(
-                $watchedProfile->getErrors()
-            );
+            $watchedProfile = new WatchedProfiles();
+            if ($watchedProfile->load(Yii::$app->request->post(), '') && $watchedProfile->save()) {
+                $response = ResponseService::successResponse(
+                    'Profile viewed!',
+                    $watchedProfile
+                );
+            } else {
+                Yii::$app->response->statusCode = 400;
+                $response = ResponseService::errorResponse(
+                    $watchedProfile->getErrors()
+                );
+            }
         }
 
         return $response;
