@@ -19,6 +19,14 @@
             Сохронить/обновить просмотр профиля
         </td>
     </tr>
+    <tr>
+        <td>
+            api/watched-profiles/delete-view
+        </td>
+        <td>
+           Удалить просмотр профиля
+        </td>
+    </tr>
 </table>
 
 ### Просмотр профиля
@@ -95,3 +103,56 @@
 <p>
     Параметр "mutual" показывает поставил ли просматриваемый вами профиль вам лайк
 </p>
+
+
+### Удалить просмотр профиля
+
+`http://yii-tinder.loc/api/watched-profiles/delete-view`
+<p>
+    Для удаления просмотра профиля необходимо отправить <b>POST</b> запрос на URL http://yii-tinder.loc/api/watched-profiles/delete-view
+</p>
+<p>
+    Требуемые параметры:
+</p>
+<table>
+    <tr>
+        <th>
+            Параметры
+        </th>
+        <th>
+            Значение
+        </th>
+    </tr>
+    <tr>
+        <td>
+            candidate_profile_id
+        </td>
+        <td>
+            id профиля кандидата
+        </td>
+    </tr>
+    <tr>
+        <td>
+            user_profile_id
+        </td>
+        <td>
+            id профиля пользователя   
+        </td>
+    </tr>
+</table>
+<p>
+    Пример запроса:
+</p>
+
+`http://yii-tinder.loc/api/watched-profiles/delete-view`
+
+<p>
+    Пример сообщения при удачном удалении:
+</p>
+
+```json5
+{
+  "message": "Success!",
+  "data": "View is deleted!"
+}
+```

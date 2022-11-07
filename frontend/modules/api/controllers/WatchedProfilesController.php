@@ -67,4 +67,27 @@ class WatchedProfilesController extends ApiController
 
         return $response;
     }
+
+    public function actionDeleteView(): array
+    {
+        $watchedProfile = WatchedProfiles::find()->where([
+            'user_profile_id' => \Yii::$app->request->post('user_profile_id'),
+            'candidate_profile_id' => Yii::$app->request->post('candidate_profile_id')
+        ])->one();
+
+        if ($watchedProfile != null) {
+            $watchedProfile->delete();
+
+            $response = ResponseService::successResponse(
+                'Success!',
+                'View is deleted!'
+            );
+        } else {
+            $response = ResponseService::errorResponse(
+                'No match found!'
+            );
+        }
+
+        return $response;
+    }
 }
