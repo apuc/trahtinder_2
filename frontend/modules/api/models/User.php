@@ -10,7 +10,9 @@ class User extends \common\models\User
             'id',
             'email',
             'access_token',
-            'access_token_expired_at'
+            'access_token_expired_at',
+            'refresh_token',
+            'refresh_token_expired_at'
         ];
     }
 

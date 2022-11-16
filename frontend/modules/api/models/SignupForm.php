@@ -15,7 +15,8 @@ class SignupForm extends Model
     public $password;
     public $phone;
 
-    const EXPIRE_TIME = 604800; // token expiration time, valid for 7 days
+    const EXPIRE_TIME_WEEK = 604800; // token expiration time, valid for 7 days
+    const EXPIRE_TIME_MONTH = 2592000; // token expiration time, valid for 30 days
 
 
     /**
@@ -59,7 +60,9 @@ class SignupForm extends Model
         $user->generateEmailVerificationToken();
 
         $user->access_token = Yii::$app->security->generateRandomString();
-        $user->access_token_expired_at = date('Y-m-d', time() + static::EXPIRE_TIME);
+        $user->access_token_expired_at = date('Y-m-d', time() + static::EXPIRE_TIME_WEEK);
+        $user->refresh_token = Yii::$app->security->generateRandomString();
+        $user->refresh_token_expired_at = date('Y-m-d', time() + static::EXPIRE_TIME_MONTH);
 
         return $user->save(); //  $this->sendEmail($user)
     }
@@ -82,4 +85,6 @@ class SignupForm extends Model
             ->setSubject('Account registration at ' . Yii::$app->name)
             ->send();
     }
+
+
 }

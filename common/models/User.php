@@ -2,7 +2,6 @@
 
 namespace common\models;
 
-use udokmeci\yii2PhoneValidator\PhoneValidator;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -24,6 +23,8 @@ use yii\web\UnauthorizedHttpException;
  * @property integer $updated_at
  * @property string access_token
  * @property $access_token_expired_at
+ * @property string $refresh_token
+ * @property $refresh_token_expired_at
  * @property string $password write-only password
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -59,6 +60,14 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
             ['phone', 'required'],
+
+            [['status', 'created_at', 'updated_at'], 'integer'],
+            [['access_token_expired_at', 'refresh_token_expired_at'], 'safe'],
+            [['auth_key'], 'string', 'max' => 32],
+            [['password_hash', 'password_reset_token', 'email', 'verification_token', 'access_token', 'phone', 'refresh_token'], 'string', 'max' => 255],
+            [['email'], 'unique'],
+            [['password_reset_token'], 'unique'],
+            [['access_token'], 'unique'],
         ];
     }
 
@@ -71,6 +80,16 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->access_token = Yii::$app->security->generateRandomString();
         return $this->access_token;
+    }
+
+    public function refreshAccessToken()
+    {
+        $this->access_token = Yii::$app->security->generateRandomString();
+        $this->refresh_token = Yii::$app->security->generateRandomString();
+        $this->access_token_expired_at =  date('Y-m-d', time() + 604800); // token expiration time, valid for 7 days
+        $this->refresh_token_expired_at =  date('Y-m-d', time() + 2592000); // token expiration time, valid for 30 days
+
+        $this->save(false);
     }
 
     /**
@@ -96,17 +115,6 @@ class User extends ActiveRecord implements IdentityInterface
             return $user;
         }
     }
-
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-//    public static function findByUsername($username)
-//    {
-//        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
-//    }
 
     /**
      * Finds user by username
