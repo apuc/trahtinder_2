@@ -35,6 +35,14 @@
             Обновление токена доступа
         </td>
     </tr>
+    <tr>
+        <td>
+            api/user/request-password-reset
+        </td>
+        <td>
+            Сбросить пароль
+        </td>
+    </tr>
 </table>
 
 ### Регистрация
@@ -232,5 +240,56 @@
     "refresh_token": "ymb2YjAxUb2xdg7PjVfFCBBl2sjGlTsS",
     "refresh_token_expired_at": "2022-12-16"
   }
+}
+```
+
+### Сброс Пароля
+
+`http://yii-tinder.loc/api/user/request-password-reset`
+
+<p>
+    Для сброса пароля пользователя необходимо отправить <b>POST</b> запрос
+    на URL http://yii-tinder.loc/api/user/request-password-reset.
+</p>
+<p> 
+    Пример запроса:
+</p>
+
+`http://yii-tinder.loc/api/user/request-password-reset`
+
+<p>
+    Требуемые параметры:
+</p>
+<table>
+    <tr>
+        <th>
+            Параметры
+        </th>
+        <th>
+            Значение
+        </th>
+    </tr>
+    <tr>
+        <td>
+            email
+        </td>
+        <td>
+            Почтовый адрес
+        </td>
+    </tr>
+</table>
+
+<p>
+    В случаи успеха возвращает сообщение об успешной отправке сообщения для сброса пароля на электронную почту пользователя.
+</p>
+
+<p>
+    Пример возвращаемых данных
+</p>
+
+```json5
+{
+  "message": "Successful!",
+  "data": "Check your email for further instructions."
 }
 ```
