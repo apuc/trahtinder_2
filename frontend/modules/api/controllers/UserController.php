@@ -22,11 +22,32 @@ class UserController extends ApiController
                 'actions' => [
                     'login' => ['GET'],
                     'create' => ['POST'],
+                    'refresh-access-token' => ['GET'],
                     'request-password-reset' => ['POST'],
                 ],
             ];
 
         return $behaviors;
+    }
+
+    public function actionRefreshAccessToken($refreshToken): array
+    {
+        $user = User::find()->where(['refresh_token' => $refreshToken, 'status' => User::STATUS_ACTIVE])->one();
+
+        if (!$user || strtotime($user->refresh_token_expired_at) < time()) {
+            Yii::$app->response->statusCode = 404;
+            $response = ResponseService::errorResponse(
+                'User not found or the refresh - token expired!'
+            );
+        } else {
+            $user->refreshAccessToken();
+            $response = ResponseService::successResponse(
+                'Token is refreshed!',
+                $user
+            );
+        }
+
+        return $response;
     }
 
     public function actionLogin($email, $password): array
