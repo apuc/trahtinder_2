@@ -76,8 +76,8 @@ class UserController extends ApiController
         if ($model->load(Yii::$app->request->post(), '') & $model->validate()) {
             if ($model->sendEmail()) {
                 return ResponseService::successResponse(
-                    'Check your email for further instructions.',
-                    User::findByEmail($model->email)
+                    'Successful!',
+                    'Check your email for further instructions.'
                 );
             }
         }
