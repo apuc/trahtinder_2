@@ -29,6 +29,9 @@ class UserProfile extends \yii\db\ActiveRecord
 {
     public $image;
 
+    const MIN_AGE = 18;
+    const MAX_AGE = 60;
+
     const GENDER_WOMAN = 20;
     const GENDER_MAN = 30;
 
@@ -91,10 +94,10 @@ class UserProfile extends \yii\db\ActiveRecord
                 $diff = abs(strtotime($this->birthday) - strtotime(date('Y-m-d H:i:s')));
                 $years = floor($diff / (365*60*60*24));
 
-                if (18 > $years) {
+                if (self::MIN_AGE > $years) {
                     $this->addError($attribute, "Sorry you're too young");
                 }
-                if (60 < $years) {
+                if (self::MAX_AGE < $years) {
                     $this->addError($attribute, "Sorry you're too old");
                 }
             }],
