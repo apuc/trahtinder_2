@@ -22,17 +22,19 @@ class FakeUsersController extends Controller {
             UserProfile::GENDER_WOMAN,
             UserProfile::GENDER_MAN
         ];
-        $orientation = [
-            UserProfile::ORIENTATION_GAY,
+        $orientationForWoman = [
             UserProfile::ORIENTATION_HETERO,
             UserProfile::ORIENTATION_LESBIAN,
+            UserProfile::ORIENTATION_BISEXUAL
+        ];
+        $orientationForMan = [
+            UserProfile::ORIENTATION_GAY,
+            UserProfile::ORIENTATION_HETERO,
             UserProfile::ORIENTATION_BISEXUAL
         ];
 
         foreach ($citiesId as $cityId) {
             echo "Generate users for city with id: $cityId \n";
-//            $userList =  array();
-//            $profileList =  array();
 
             for($i = 0; $i < $count; $i++) {
                 $user = new User();
@@ -44,13 +46,15 @@ class FakeUsersController extends Controller {
                 $user->save(false);
 
                 $profile = new UserProfile();
-                $profile->gender = array_rand($gendersList);
+                $profile->gender = $gendersList[array_rand($gendersList)];
                 $profile->about = $faker->text(rand(100, 200));
                 $profile->user_id = $user->id;
                 $profile->city_id = $cityId;
                 $profile->min_age = rand(UserProfile::MIN_AGE, UserProfile::MAX_AGE - 5);
                 $profile->max_age = rand($profile->min_age, UserProfile::MAX_AGE);
-                $profile->orientation = array_rand($orientation);
+                $profile->orientation =
+                    $profile->gender == UserProfile::GENDER_MAN ? $orientationForMan[array_rand($orientationForMan)] :
+                        $orientationForWoman[array_rand($orientationForWoman)];
                 $profile->birthday = $faker->date();
                 $profile->name = $profile->gender == UserProfile::GENDER_MAN ? $faker->firstNameFemale: $faker->firstNameMale;
                 $profile->save(false);
